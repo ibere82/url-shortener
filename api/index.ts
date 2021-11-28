@@ -1,15 +1,6 @@
-import express from 'express'
-import { URLController } from './controller/URLController'
-import { MongoConnection } from './database/MongoConnection'
-
-const api = express()
-api.use(express.json())
-
-const database = new MongoConnection()
-database.connect()
+import { URLController } from './controller'
 
 const urlController = new URLController()
-api.post('/shorten', urlController.shorten)
-api.get('/:hash', urlController.redirect)
 
-api.listen(5000, () => console.log('Express listening'))
+export const get = async (hash: string) => await urlController.redirect(hash)
+export const post = async (originURL: string) => await urlController.shorten(originURL)
